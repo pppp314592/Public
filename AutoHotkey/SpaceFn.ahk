@@ -64,8 +64,9 @@ sendKeyAfterSpace(key) {
 *u:: sendKeyWithSpaceFn("Home")       ; u → Home
 *o:: sendKeyWithSpaceFn("End")        ; o → End
 *n:: sendKeyWithSpaceFn("Delete")     ; n → Delete
-*,:: sendKeyWithSpaceFn("PgUp")       ; , → PageUp
+*m:: sendKeyWithSpaceFn("PgUp")       ; , → PageUp
 *.:: sendKeyWithSpaceFn("PgDn")       ; . → PageDown
+*,:: sendKeyWithSpaceFn("PrintScreen")       ; . → PageDown
 
 
 ;*g:: sendKeyWithSpaceFn("Up 5")          ; . → PageDown
@@ -99,8 +100,8 @@ sendKeyAfterSpace(key) {
 ; *w:: sendKeyWithSpaceFn("7")
 ; *e:: sendKeyWithSpaceFn("8")
 ; *r:: sendKeyWithSpaceFn("9")
-; *q:: sendKeyWithSpaceFn("+")
-; *a:: sendKeyWithSpaceFn("-")         ; ` → `キー
+*q:: sendKeyWithSpaceFn("+")
+*a:: sendKeyWithSpaceFn("-")         ; ` → `キー
 
 *w:: sendKeyWithSpaceFn("(") ; w → (
 *x:: sendKeyWithSpaceFn(")") ; x → )
