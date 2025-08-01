@@ -1,93 +1,61 @@
 ﻿; SpaceFn 実装
-whenSpaceFn := false
-spaceFnTriggered := false
-altSpace := false
-SpaceDownTime := 0
+whenSpaceFn := false, spaceFnTriggered := false, altSpace := false, SpaceDownTime := 0
 isJIS := (GetKeySC("¥") == "07D") ; JISキーボードかどうかを判定
-~!Space::
-{
-    ; Alt + Space では通常の Alt + Space 動作にする
-    global altSpace
-    altSpace := true
-    Return
-}
-*Space::
-{
-    global whenSpaceFn
-    if !whenSpaceFn {
-        global SpaceDownTime := A_TickCount ; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
-    }
+
+; Alt + Space では通常の Alt + Space 動作にする
+~!Space:: global altSpace := true
+; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
+*Space:: {
+    global
+    if !whenSpaceFn
+        SpaceDownTime := A_TickCount
     whenSpaceFn := true
 }
-*Space up::
-{
-    global whenSpaceFn
-    global spaceFnTriggered
-    global altSpace
-    global SpaceDownTime
+*Space up:: {
+    global
     ; Alt + Space では通常の Alt + Space 動作にする
     if altSpace {
         altSpace := false
         Return
     }
-
-    if !spaceFnTriggered {
-        ; Space 単体押しの場合は通常の Space 動作
-        if (A_TickCount - SpaceDownTime < 1000) {
-            ; Spaceが押されてから1000ms以内に離された場合は通常のSpace動作
+    if !spaceFnTriggered
+        ; Space 1000msec以内の単体押しの場合は通常の Space 動作
+        if (A_TickCount - SpaceDownTime < 1000)
             Send "{Blind}{Space}"
-        }
-    } else {
-        ; スペースとコンビネーションキーがほぼ同時に離れた際の判定バッファ
-        while (A_TimeIdlePhysical < 60) {
-            Sleep 10
-        }
-    }
+        else
+            while (A_TimeIdlePhysical < 60)  ; スペースとコンビネーションキーがほぼ同時に離れた際の判定バッファ
+                Sleep 10
     ToolTip ""
 
-    whenSpaceFn := false
-    spaceFnTriggered := false
-    altSpace := false
+    whenSpaceFn := false, altSpace := false, spaceFnTriggered := false
 }
 sendKeyWithSpaceFn(key) {
-    global spaceFnTriggered
+    global
     spaceFnTriggered := true
     SendEvent "{Blind}{" key "}"
-}
-sendKeyAfterSpace(key) {
-    global spaceFnTriggered
-    if spaceFnTriggered {
-        Send "{Blind}{" key "}"
-    } else {
-        spaceFnTriggered := true
-        Send "{Blind}{Space}{" key "}"
-    }
 }
 
 
 #HotIf whenSpaceFn ; SpaceFnモードが有効なときのみ以下のホットキーを有効化
 
-*j:: sendKeyWithSpaceFn("Left")       ; j → ←
-*k:: sendKeyWithSpaceFn("Down")       ; m → ↓
-*l:: sendKeyWithSpaceFn("Right")      ; l → →
-*i:: sendKeyWithSpaceFn("Up")         ; i → ↑
-*u:: sendKeyWithSpaceFn("Home")       ; u → Home
-*o:: sendKeyWithSpaceFn("End")        ; o → End
-*n:: sendKeyWithSpaceFn("Delete")     ; n → Delete
-*m:: sendKeyWithSpaceFn("PgUp")       ; , → PageUp
-*.:: sendKeyWithSpaceFn("PgDn")       ; . → PageDown
-*,:: sendKeyWithSpaceFn("PrintScreen")       ; . → PageDown
+*j:: sendKeyWithSpaceFn("Left")
+*k:: sendKeyWithSpaceFn("Down")
+*l:: sendKeyWithSpaceFn("Right")
+*i:: sendKeyWithSpaceFn("Up")
+*u:: sendKeyWithSpaceFn("Home")
+*o:: sendKeyWithSpaceFn("End")
+*n:: sendKeyWithSpaceFn("Delete")
+*m:: sendKeyWithSpaceFn("PgUp")
+*.:: sendKeyWithSpaceFn("PgDn")
+*,:: sendKeyWithSpaceFn("PrintScreen")
 
+*g:: sendKeyWithSpaceFn("BROWSER_FORWARD")
+*h:: sendKeyWithSpaceFn("BROWSER_BACK")
 
-;*g:: sendKeyWithSpaceFn("Up 5")          ; . → PageDown
-;*h:: sendKeyWithSpaceFn("Down 5")       ; . → PageDown
-*g:: sendKeyWithSpaceFn("BROWSER_FORWARD")    ; g →  進む
-*h:: sendKeyWithSpaceFn("BROWSER_BACK")       ; . → 戻る
+*;:: sendKeyWithSpaceFn("Enter")
+*p:: sendKeyWithSpaceFn("Backspace")
 
-*;:: sendKeyWithSpaceFn("Enter")      ; ; → Enter
-*p:: sendKeyWithSpaceFn("Backspace")  ; p → Backspace
-
-*1:: sendKeyWithSpaceFn("F1")         ; 数字キー → F1〜F12
+*1:: sendKeyWithSpaceFn("F1")
 *2:: sendKeyWithSpaceFn("F2")
 *3:: sendKeyWithSpaceFn("F3")
 *4:: sendKeyWithSpaceFn("F4")
@@ -97,38 +65,26 @@ sendKeyAfterSpace(key) {
 *8:: sendKeyWithSpaceFn("F8")
 *9:: sendKeyWithSpaceFn("F9")
 *0:: sendKeyWithSpaceFn("F10")
+*-:: sendKeyWithSpaceFn("F11")
 if (isJIS) {
-    ^-:: sendKeyWithSpaceFn("F11") ; JISキーボードでは - キーが F11
-} else {
-    *-:: sendKeyWithSpaceFn("F11") ; USキーボードでは - キーが F12
+    *^:: sendKeyWithSpaceFn("F12") ; JISキーボードでは ^ キーが F12
 }
-if (isJIS) {
-    *sc07D:: sendKeyWithSpaceFn("F12") ; JISキーボードでは + キーが F12
-} else {
+else {
     *=:: sendKeyWithSpaceFn("F12") ; USキーボードでは + キーが F11
 }
+; *Esc:: sendKeyWithSpaceFn("vkF3sc029") ; Esc → Escape
 
-; *z:: sendKeyWithSpaceFn("0")          ; z〜r → 数字キー
-; *x:: sendKeyWithSpaceFn("1")
-; *c:: sendKeyWithSpaceFn("2")
-; *v:: sendKeyWithSpaceFn("3")
-; *s:: sendKeyWithSpaceFn("4")
-; *d:: sendKeyWithSpaceFn("5")
-; *f:: sendKeyWithSpaceFn("6")
-; *w:: sendKeyWithSpaceFn("7")
-; *e:: sendKeyWithSpaceFn("8")
-; *r:: sendKeyWithSpaceFn("9")
 *q:: sendKeyWithSpaceFn("+")
-*a:: sendKeyWithSpaceFn("-")         ; ` → `キー
+*a:: sendKeyWithSpaceFn("-")
+*z:: sendKeyWithSpaceFn("=")
+*x:: sendKeyWithSpaceFn("*")
 
-
-*w:: sendKeyWithSpaceFn("(") ; w → (
-*x:: sendKeyWithSpaceFn(")") ; x → )
-*e:: sendKeyWithSpaceFn("{") ; e → {
-*d:: sendKeyWithSpaceFn("}") ; d → }
-*r:: sendKeyWithSpaceFn("[") ; r → [
-*f:: sendKeyWithSpaceFn("]") ; f → ]
-
+*w:: sendKeyWithSpaceFn("(")
+*s:: sendKeyWithSpaceFn(")")
+*e:: sendKeyWithSpaceFn("{")
+*d:: sendKeyWithSpaceFn("}")
+*r:: sendKeyWithSpaceFn("[")
+*f:: sendKeyWithSpaceFn("]")
 
 *[:: sendKeyWithSpaceFn("Volume_Up")    ; [ → 音量アップ
 *]:: sendKeyWithSpaceFn("Volume_Down")  ; ] → 音量ダウン
@@ -137,18 +93,23 @@ if (isJIS) {
 
 
 ;  *Esc:: sendKeyWithSpaceFn("vk1C") ; Esc → IME切り替え（vk1CはIMEのオン/オフ）
-
-
 ; *sc029:: sendKeyWithSpaceFn("Volume_Mute") ; ;キー → ミュート
 
-; increment := 15
-; *f:: MouseMove(increment, 0, 0, "R") ; マウスカーソルを右に10px移動
-; *d:: MouseMove(-increment, 0, 0, "R") ; マウスカーソルを左に10px移動
-
-; *Enter:: sendKeyAfterSpace("Enter")
-; *Left:: sendKeyAfterSpace("Left")
-; *Right:: sendKeyAfterSpace("Right")
-; *Up:: sendKeyAfterSpace("Up")
-; *Down:: sendKeyAfterSpace("Down")
-
 #HotIf
+
+
+;HotStrignの設定
+#Hotstring EndChars `n`t
+#Hotstring OC*?
+
+::jjk:::
+::jjm::-
+::jja::@
+::jjb::\
+::jjs::/
+::jjc::^
+::jjd::"
+::jjq::'
+::jjp:: {
+    SendText("+")
+}
