@@ -78,6 +78,9 @@ else {
 *a:: sendKeyWithSpaceFn("-")
 *z:: sendKeyWithSpaceFn("=")
 *x:: sendKeyWithSpaceFn("*")
+*c:: sendKeyWithSpaceFn("'")
+*v:: sendKeyWithSpaceFn("`"")
+
 
 *w:: sendKeyWithSpaceFn("(")
 *s:: sendKeyWithSpaceFn(")")
@@ -110,6 +113,9 @@ else {
 ::jjc::^
 ::jjd::"
 ::jjq::'
+::jjt:: {
+    SendText("``")
+}
 ::jjp:: {
     SendText("+")
 }
