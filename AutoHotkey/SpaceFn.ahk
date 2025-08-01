@@ -68,8 +68,10 @@ sendKeyAfterSpace(key) {
 *.:: sendKeyWithSpaceFn("PgDn")       ; . → PageDown
 
 
-*g:: sendKeyWithSpaceFn("Up 5")          ; . → PageDown
-*h:: sendKeyWithSpaceFn("Down 5")       ; . → PageDown
+;*g:: sendKeyWithSpaceFn("Up 5")          ; . → PageDown
+;*h:: sendKeyWithSpaceFn("Down 5")       ; . → PageDown
+*g:: sendKeyWithSpaceFn("BROWSER_FORWARD")    ; g →  進む
+*h:: sendKeyWithSpaceFn("BROWSER_BACK")       ; . → 戻る
 
 *;:: sendKeyWithSpaceFn("Enter")      ; ; → Enter
 *p:: sendKeyWithSpaceFn("Backspace")  ; p → Backspace
@@ -87,18 +89,26 @@ sendKeyAfterSpace(key) {
 *-:: sendKeyWithSpaceFn("F11")
 *=:: sendKeyWithSpaceFn("F12")
 
-*z:: sendKeyWithSpaceFn("0")          ; z〜r → 数字キー
-*x:: sendKeyWithSpaceFn("1")
-*c:: sendKeyWithSpaceFn("2")
-*v:: sendKeyWithSpaceFn("3")
-*s:: sendKeyWithSpaceFn("4")
-*d:: sendKeyWithSpaceFn("5")
-*f:: sendKeyWithSpaceFn("6")
-*w:: sendKeyWithSpaceFn("7")
-*e:: sendKeyWithSpaceFn("8")
-*r:: sendKeyWithSpaceFn("9")
-*q:: sendKeyWithSpaceFn("+")
-*a:: sendKeyWithSpaceFn("-")         ; ` → `キー
+; *z:: sendKeyWithSpaceFn("0")          ; z〜r → 数字キー
+; *x:: sendKeyWithSpaceFn("1")
+; *c:: sendKeyWithSpaceFn("2")
+; *v:: sendKeyWithSpaceFn("3")
+; *s:: sendKeyWithSpaceFn("4")
+; *d:: sendKeyWithSpaceFn("5")
+; *f:: sendKeyWithSpaceFn("6")
+; *w:: sendKeyWithSpaceFn("7")
+; *e:: sendKeyWithSpaceFn("8")
+; *r:: sendKeyWithSpaceFn("9")
+; *q:: sendKeyWithSpaceFn("+")
+; *a:: sendKeyWithSpaceFn("-")         ; ` → `キー
+
+*w:: sendKeyWithSpaceFn("(") ; w → (
+*x:: sendKeyWithSpaceFn(")") ; x → )
+*e:: sendKeyWithSpaceFn("{") ; e → {
+*d:: sendKeyWithSpaceFn("}") ; d → }
+*r:: sendKeyWithSpaceFn("[") ; r → [
+*f:: sendKeyWithSpaceFn("]") ; f → ]
+
 
 *[:: sendKeyWithSpaceFn("Volume_Up")    ; [ → 音量アップ
 *]:: sendKeyWithSpaceFn("Volume_Down")  ; ] → 音量ダウン
