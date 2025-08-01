@@ -3,6 +3,7 @@ whenSpaceFn := false
 spaceFnTriggered := false
 altSpace := false
 SpaceDownTime := 0
+isJIS := (GetKeySC("¥") == "07D") ; JISキーボードかどうかを判定
 ~!Space::
 {
     ; Alt + Space では通常の Alt + Space 動作にする
@@ -13,11 +14,8 @@ SpaceDownTime := 0
 *Space::
 {
     global whenSpaceFn
-    global SpaceDownTime
     if !whenSpaceFn {
-        ; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
-        SpaceDownTime := A_TickCount
-        ToolTip "SpaceFnモードが有効になりました。"
+        global SpaceDownTime := A_TickCount ; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
     }
     whenSpaceFn := true
 }
@@ -38,8 +36,6 @@ SpaceDownTime := 0
         if (A_TickCount - SpaceDownTime < 1000) {
             ; Spaceが押されてから1000ms以内に離された場合は通常のSpace動作
             Send "{Blind}{Space}"
-        } else {
-            ; 500ms以上経過している場合はSpaceFnモードを終了
         }
     } else {
         ; スペースとコンビネーションキーがほぼ同時に離れた際の判定バッファ
@@ -47,8 +43,7 @@ SpaceDownTime := 0
             Sleep 10
         }
     }
-    ToolTip "SpaceFnモードが無効になりました。"
-    SetTimer () => ToolTip(), -10000
+    ToolTip ""
 
     whenSpaceFn := false
     spaceFnTriggered := false
@@ -102,8 +97,16 @@ sendKeyAfterSpace(key) {
 *8:: sendKeyWithSpaceFn("F8")
 *9:: sendKeyWithSpaceFn("F9")
 *0:: sendKeyWithSpaceFn("F10")
-*-:: sendKeyWithSpaceFn("F11")
-*=:: sendKeyWithSpaceFn("F12")
+if (isJIS) {
+    ^-:: sendKeyWithSpaceFn("F11") ; JISキーボードでは - キーが F11
+} else {
+    *-:: sendKeyWithSpaceFn("F11") ; USキーボードでは - キーが F12
+}
+if (isJIS) {
+    *sc07D:: sendKeyWithSpaceFn("F12") ; JISキーボードでは + キーが F12
+} else {
+    *=:: sendKeyWithSpaceFn("F12") ; USキーボードでは + キーが F11
+}
 
 ; *z:: sendKeyWithSpaceFn("0")          ; z〜r → 数字キー
 ; *x:: sendKeyWithSpaceFn("1")
