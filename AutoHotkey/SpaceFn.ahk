@@ -2,6 +2,7 @@
 whenSpaceFn := false
 spaceFnTriggered := false
 altSpace := false
+SpaceDownTime := 0
 ~!Space::
 {
     ; Alt + Space では通常の Alt + Space 動作にする
@@ -12,6 +13,12 @@ altSpace := false
 *Space::
 {
     global whenSpaceFn
+    global SpaceDownTime
+    if !whenSpaceFn {
+        ; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
+        SpaceDownTime := A_TickCount
+        ToolTip "SpaceFnモードが有効になりました。"
+    }
     whenSpaceFn := true
 }
 *Space up::
@@ -19,6 +26,7 @@ altSpace := false
     global whenSpaceFn
     global spaceFnTriggered
     global altSpace
+    global SpaceDownTime
     ; Alt + Space では通常の Alt + Space 動作にする
     if altSpace {
         altSpace := false
@@ -27,13 +35,21 @@ altSpace := false
 
     if !spaceFnTriggered {
         ; Space 単体押しの場合は通常の Space 動作
-        Send "{Blind}{Space}"
+        if (A_TickCount - SpaceDownTime < 1000) {
+            ; Spaceが押されてから1000ms以内に離された場合は通常のSpace動作
+            Send "{Blind}{Space}"
+        } else {
+            ; 500ms以上経過している場合はSpaceFnモードを終了
+        }
     } else {
         ; スペースとコンビネーションキーがほぼ同時に離れた際の判定バッファ
         while (A_TimeIdlePhysical < 60) {
             Sleep 10
         }
     }
+    ToolTip "SpaceFnモードが無効になりました。"
+    SetTimer () => ToolTip(), -10000
+
     whenSpaceFn := false
     spaceFnTriggered := false
     altSpace := false
@@ -58,7 +74,6 @@ sendKeyAfterSpace(key) {
 
 *j:: sendKeyWithSpaceFn("Left")       ; j → ←
 *k:: sendKeyWithSpaceFn("Down")       ; m → ↓
-;*k:: sendKeyWithSpaceFn("Right")      ; k → →
 *l:: sendKeyWithSpaceFn("Right")      ; l → →
 *i:: sendKeyWithSpaceFn("Up")         ; i → ↑
 *u:: sendKeyWithSpaceFn("Home")       ; u → Home
@@ -102,6 +117,7 @@ sendKeyAfterSpace(key) {
 ; *r:: sendKeyWithSpaceFn("9")
 *q:: sendKeyWithSpaceFn("+")
 *a:: sendKeyWithSpaceFn("-")         ; ` → `キー
+
 
 *w:: sendKeyWithSpaceFn("(") ; w → (
 *x:: sendKeyWithSpaceFn(")") ; x → )
