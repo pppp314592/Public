@@ -46,17 +46,18 @@ sendKeyWithSpaceFn(key) {
 *i:: sendKeyWithSpaceFn("Up")           ; i → 上矢印
 *u:: sendKeyWithSpaceFn("Home")         ; u → Home
 *o:: sendKeyWithSpaceFn("End")          ; o → End
+*y:: sendKeyWithSpaceFn("Delete")       ; n → Delete
 *n:: sendKeyWithSpaceFn("Delete")       ; n → Delete
 ;*,:: sendKeyWithSpaceFn("PgUp")         ; m → PageUp
 ;*.:: sendKeyWithSpaceFn("PgDn")         ; . → PageDown
 ;*,:: sendKeyWithSpaceFn("PrintScreen")  ; , → PrintScreen
 
-*g:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
-*h:: sendKeyWithSpaceFn("BROWSER_BACK")    ; h → ブラウザ戻る
+;*g:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
+;*h:: sendKeyWithSpaceFn("BROWSER_BACK")    ; h → ブラウザ戻る
 
 *;:: sendKeyWithSpaceFn("Enter")        ; ; → Enter
 *p:: sendKeyWithSpaceFn("Backspace")    ; p → Backspace
-*y:: sendKeyWithSpaceFn("ESC")          ; y → Esc
+*h:: sendKeyWithSpaceFn("ESC")          ; y → Esc
 
 
 *1:: sendKeyWithSpaceFn("F1")           ; 1 → F1
@@ -75,8 +76,10 @@ if (isJIS) {
 }
 else {
     *=:: sendKeyWithSpaceFn("F12")      ; USキーボードでは = キーが F12
-    *ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
 }
+
+
+*ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
 ; *t:: sendKeyWithSpaceFn("vk1c") ; Esc → Escape
 ;*t:: sendKeyWithSpaceFn("^CapsLock") ; t → IMEトグル（Ctrl+CapsLock）
 
