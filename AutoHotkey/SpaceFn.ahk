@@ -3,7 +3,7 @@ whenSpaceFn := false, spaceFnTriggered := false, altSpace := false, SpaceDownTim
 isJIS := (GetKeySC("¥") == "07D") ; JISキーボードかどうかを判定
 
 ; Alt + Space では通常の Alt + Space 動作にする
-~!Space:: global altSpace := true
+; ~!Space:: global altSpace := true
 ; SpaceFnモードが有効でない場合は、Spaceを押したときにSpaceFnモードを有効化
 *Space:: {
     global
@@ -28,11 +28,15 @@ isJIS := (GetKeySC("¥") == "07D") ; JISキーボードかどうかを判定
     ToolTip ""
 
     whenSpaceFn := false, altSpace := false, spaceFnTriggered := false
+    return
 }
 sendKeyWithSpaceFn(key) {
     global spaceFnTriggered := true
     SendEvent "{Blind}{" key "}"
 }
+
+;CapsLock::LCtrl
+
 
 #HotIf whenSpaceFn ; SpaceFnモードが有効なときのみ以下のホットキーを有効化
 
@@ -43,15 +47,17 @@ sendKeyWithSpaceFn(key) {
 *u:: sendKeyWithSpaceFn("Home")         ; u → Home
 *o:: sendKeyWithSpaceFn("End")          ; o → End
 *n:: sendKeyWithSpaceFn("Delete")       ; n → Delete
-*m:: sendKeyWithSpaceFn("PgUp")         ; m → PageUp
-*.:: sendKeyWithSpaceFn("PgDn")         ; . → PageDown
-*,:: sendKeyWithSpaceFn("PrintScreen")  ; , → PrintScreen
+;*,:: sendKeyWithSpaceFn("PgUp")         ; m → PageUp
+;*.:: sendKeyWithSpaceFn("PgDn")         ; . → PageDown
+;*,:: sendKeyWithSpaceFn("PrintScreen")  ; , → PrintScreen
 
 *g:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
 *h:: sendKeyWithSpaceFn("BROWSER_BACK")    ; h → ブラウザ戻る
 
 *;:: sendKeyWithSpaceFn("Enter")        ; ; → Enter
 *p:: sendKeyWithSpaceFn("Backspace")    ; p → Backspace
+*y:: sendKeyWithSpaceFn("ESC")          ; y → Esc
+
 
 *1:: sendKeyWithSpaceFn("F1")           ; 1 → F1
 *2:: sendKeyWithSpaceFn("F2")           ; 2 → F2
@@ -69,8 +75,11 @@ if (isJIS) {
 }
 else {
     *=:: sendKeyWithSpaceFn("F12")      ; USキーボードでは = キーが F12
+    *ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
 }
-; *Esc:: sendKeyWithSpaceFn("vkF3sc029") ; Esc → Escape
+; *t:: sendKeyWithSpaceFn("vk1c") ; Esc → Escape
+;*t:: sendKeyWithSpaceFn("^CapsLock") ; t → IMEトグル（Ctrl+CapsLock）
+
 
 *q:: sendKeyWithSpaceFn("+")            ; q → +
 *a:: sendKeyWithSpaceFn("-")            ; a → -
@@ -79,17 +88,15 @@ else {
 *c:: sendKeyWithSpaceFn("'")            ; c → '
 *v:: sendKeyWithSpaceFn("`"")           ; v → "
 
-*w:: sendKeyWithSpaceFn("(")            ; w → (
-*s:: sendKeyWithSpaceFn(")")            ; s → )
-*e:: sendKeyWithSpaceFn("{")            ; e → {
-*d:: sendKeyWithSpaceFn("}")            ; d → }
+*,:: sendKeyWithSpaceFn("(")            ; w → (
+*.:: sendKeyWithSpaceFn(")")            ; s → )
+*m:: sendKeyWithSpaceFn("{")            ; e → {
+*/:: sendKeyWithSpaceFn("}")            ; d → }
 *r:: sendKeyWithSpaceFn("[")            ; r → [
 *f:: sendKeyWithSpaceFn("]")            ; f → ]
 
 *[:: sendKeyWithSpaceFn("Volume_Up")    ; [ → 音量アップ
 *]:: sendKeyWithSpaceFn("Volume_Down")  ; ] → 音量ダウン
-
-*y:: sendKeyWithSpaceFn("ESC")          ; y → Esc
 
 
 ;  *Esc:: sendKeyWithSpaceFn("vk1C") ; Esc → IME切り替え（vk1CはIMEのオン/オフ）

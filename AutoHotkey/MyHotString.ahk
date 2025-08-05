@@ -22,6 +22,6 @@
 #Hotstring EndChars `n`t
 #Hotstring OC*?
 
-::jjJMOTTO:: {
+::hsjmotto:: {
     SendText("JM0731829")
 }
