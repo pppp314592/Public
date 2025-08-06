@@ -70,13 +70,15 @@ sendKeyWithSpaceFn(key) {
 *8:: sendKeyWithSpaceFn("F8")           ; 8 → F8
 *9:: sendKeyWithSpaceFn("F9")           ; 9 → F9
 *0:: sendKeyWithSpaceFn("F10")          ; 0 → F10
-*-:: sendKeyWithSpaceFn("F11")          ; - → F11
-if (isJIS) {
-    *^:: sendKeyWithSpaceFn("F12")      ; JISキーボードでは ^ キーが F12
-}
-else {
-    *=:: sendKeyWithSpaceFn("F12")      ; USキーボードでは = キーが F12
-}
+;*-:: sendKeyWithSpaceFn("F11")          ; - → F11
+*q:: sendKeyWithSpaceFn("F11")          ; - → F11
+*w:: sendKeyWithSpaceFn("F12")          ; - → F11
+; if (isJIS) {
+;     *^:: sendKeyWithSpaceFn("F12")      ; JISキーボードでは ^ キーが F12
+; }
+; else {
+;     *=:: sendKeyWithSpaceFn("F12")      ; USキーボードでは = キーが F12
+; }
 
 
 *ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
@@ -84,8 +86,8 @@ else {
 ;*t:: sendKeyWithSpaceFn("^CapsLock") ; t → IMEトグル（Ctrl+CapsLock）
 
 
-*q:: sendKeyWithSpaceFn("+")            ; q → +
-*a:: sendKeyWithSpaceFn("-")            ; a → -
+*a:: sendKeyWithSpaceFn("+")            ; q → +
+*s:: sendKeyWithSpaceFn("-")            ; a → -
 *z:: sendKeyWithSpaceFn("=")            ; z → =
 *x:: sendKeyWithSpaceFn("*")            ; x → *
 *c:: sendKeyWithSpaceFn("'")            ; c → '
