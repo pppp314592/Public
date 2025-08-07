@@ -19,8 +19,8 @@ isJIS := (GetKeySC("¥") == "07D") ; JISキーボードかどうかを判定
         Return
     }
     if !spaceFnTriggered
-        ; Space を1000msec以内に単独で押した場合は通常の Space 動作
-        if (A_TickCount - SpaceDownTime < 1000)
+        ; Space を500msec以内に単独で押した場合は通常の Space 動作
+        if (A_TickCount - SpaceDownTime < 500)
             Send "{Blind}{Space}"
         else
             while (A_TimeIdlePhysical < 60)  ; スペースと他キーがほぼ同時に離れた場合の判定バッファ
@@ -46,18 +46,23 @@ sendKeyWithSpaceFn(key) {
 *i:: sendKeyWithSpaceFn("Up")           ; i → 上矢印
 *u:: sendKeyWithSpaceFn("Home")         ; u → Home
 *o:: sendKeyWithSpaceFn("End")          ; o → End
-*y:: sendKeyWithSpaceFn("Delete")       ; n → Delete
 *n:: sendKeyWithSpaceFn("Delete")       ; n → Delete
-;*,:: sendKeyWithSpaceFn("PgUp")         ; m → PageUp
-;*.:: sendKeyWithSpaceFn("PgDn")         ; . → PageDown
-;*,:: sendKeyWithSpaceFn("PrintScreen")  ; , → PrintScreen
-
-;*g:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
-;*h:: sendKeyWithSpaceFn("BROWSER_BACK")    ; h → ブラウザ戻る
-
+*,:: sendKeyWithSpaceFn("PgUp")         ; m → PageUp
+*.:: sendKeyWithSpaceFn("PgDn")         ; . → PageDown
 *;:: sendKeyWithSpaceFn("Enter")        ; ; → Enter
 *p:: sendKeyWithSpaceFn("Backspace")    ; p → Backspace
 *h:: sendKeyWithSpaceFn("ESC")          ; y → Esc
+
+;*,:: sendKeyWithSpaceFn("PrintScreen")  ; , → PrintScreen
+; *,:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
+; *.:: sendKeyWithSpaceFn("BROWSER_BACK")    ; h → ブラウザ戻る
+*-:: sendKeyWithSpaceFn("BROWSER_FORWARD") ; g → ブラウザ進む
+if (isJIS) {
+    *^:: sendKeyWithSpaceFn("BROWSER_BACK")      ; JISキーボードでは ^ キーが F12
+}
+else {
+    *=:: sendKeyWithSpaceFn("BROWSER_BACK")      ; USキーボードでは = キーが F12
+}
 
 
 *1:: sendKeyWithSpaceFn("F1")           ; 1 → F1
@@ -70,18 +75,13 @@ sendKeyWithSpaceFn(key) {
 *8:: sendKeyWithSpaceFn("F8")           ; 8 → F8
 *9:: sendKeyWithSpaceFn("F9")           ; 9 → F9
 *0:: sendKeyWithSpaceFn("F10")          ; 0 → F10
-;*-:: sendKeyWithSpaceFn("F11")          ; - → F11
 *q:: sendKeyWithSpaceFn("F11")          ; - → F11
 *w:: sendKeyWithSpaceFn("F12")          ; - → F11
-; if (isJIS) {
-;     *^:: sendKeyWithSpaceFn("F12")      ; JISキーボードでは ^ キーが F12
-; }
-; else {
-;     *=:: sendKeyWithSpaceFn("F12")      ; USキーボードでは = キーが F12
-; }
 
 
-*ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
+;*ESC:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
+*m:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
+*y:: sendKeyWithSpaceFn("vkF3sc029") ;  Esc → Escape
 ; *t:: sendKeyWithSpaceFn("vk1c") ; Esc → Escape
 ;*t:: sendKeyWithSpaceFn("^CapsLock") ; t → IMEトグル（Ctrl+CapsLock）
 
@@ -90,15 +90,19 @@ sendKeyWithSpaceFn(key) {
 *s:: sendKeyWithSpaceFn("-")            ; a → -
 *z:: sendKeyWithSpaceFn("=")            ; z → =
 *x:: sendKeyWithSpaceFn("*")            ; x → *
-*c:: sendKeyWithSpaceFn("'")            ; c → '
-*v:: sendKeyWithSpaceFn("`"")           ; v → "
 
-*,:: sendKeyWithSpaceFn("(")            ; w → (
-*.:: sendKeyWithSpaceFn(")")            ; s → )
-*m:: sendKeyWithSpaceFn("{")            ; e → {
-*/:: sendKeyWithSpaceFn("}")            ; d → }
-*r:: sendKeyWithSpaceFn("[")            ; r → [
-*f:: sendKeyWithSpaceFn("]")            ; f → ]
+*g:: sendKeyWithSpaceFn("'")            ; c → '
+*b:: sendKeyWithSpaceFn("`"")           ; v → "
+*ESC:: sendKeyWithSpaceFn("@")           ; v → "
+*TAB:: sendKeyWithSpaceFn("_")           ; v → "
+*t:: sendKeyWithSpaceFn("|")           ; v → "
+
+*e:: sendKeyWithSpaceFn("(")            ; w → (
+*r:: sendKeyWithSpaceFn(")")            ; s → )
+*d:: sendKeyWithSpaceFn("{")            ; e → {
+*f:: sendKeyWithSpaceFn("}")            ; d → }
+*c:: sendKeyWithSpaceFn("[")            ; r → [
+*v:: sendKeyWithSpaceFn("]")            ; f → ]
 
 *[:: sendKeyWithSpaceFn("Volume_Up")    ; [ → 音量アップ
 *]:: sendKeyWithSpaceFn("Volume_Down")  ; ] → 音量ダウン
