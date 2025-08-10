@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>キーボード配列エディタ</title>
+    <style>
+        .keyboard-area {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .keyboard-row {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 3px;
+            max-width: 700px;
+            margin-left: 0;
+        }
+
+        .navpad {
+            margin-left: 20px;
+        }
+
+        .navpad-row {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 3px;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 120px;
+        }
+
+        .arrow-row {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 3px;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 120px;
+        }
+
+        .numpad {
+            margin-left: 20px;
+        }
+
+        .numpad-row {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 3px;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 180px;
+        }
+
+        .key {
+            background: #eee;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .key:focus {
+            outline: 2px solid #0078d7;
+        }
+
+        .key-select-dialog {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 1px solid #888;
+            padding: 20px;
+            z-index: 1000;
+            min-width: 350px;
+            box-shadow: 0 4px 16px #0002;
+        }
+
+        .key-select-kb {
+            display: flex;
+            gap: 16px;
+            flex-direction: row;
+            margin-bottom: 10px;
+        }
+
+        .key-select-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .key-select-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .key-select-row button {
+            padding: 6px 14px;
+            min-width: 40px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>キーボード配列エディタ</h2>
+    <div class="keyboard-area">
+        <div id="keyboard">
+            <!-- キーはJSで生成 -->
+        </div>
+        <div class="navpad" id="navpad">
+            <!-- ナビゲーションキーはJSで生成 -->
+            <!-- 矢印キーはJSで生成 -->
+        </div>
+        <div class="numpad" id="numpad">
+            <!-- テンキーはJSで生成 -->
+        </div>
+    </div>
+    <script defer>
+        // キー配列（US配列例・右端余白あり）
+        const keys = [
+            // 1段目（ファンクションキー）
+            ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'Del'],
+            // 2段目
+            ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+            // 3段目
+            ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+            // 4段目
+            ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'Enter', ''],
+            // 5段目
+            ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', '', ''],
+            // 6段目
+            ['Ctrl', 'Win', 'Alt', '', 'Space', '', 'Alt', 'Win', 'Menu', 'Ctrl', '', '', '', '']
+            // ← 7段目は削除
+        ];
+        const rowTemplates = [
+            'repeat(14, 1fr)', // ファンクションキー
+            'repeat(13, 1fr) 2fr', // Backspace広め
+            '1.5fr repeat(12, 1fr) 1.5fr', // Tab/＼広め
+            '1.75fr repeat(11, 1fr) 2.25fr 0.25fr', // Caps/Enter広め
+            '2.25fr repeat(10, 1fr) 2.75fr 0.25fr 0.25fr', // Shift広め
+            '1.25fr 1.25fr 1.25fr 0.5fr 6.25fr 0.5fr 1.25fr 1.25fr 1.25fr 1.25fr 0.25fr 0.25fr 0.25fr 0.25fr'
+            // ← 7段目は削除
+        ];
+
+        const keyboard = document.getElementById('keyboard');
+        // 選択肢となるキー一覧
+        const keyList = [
+            // ファンクション
+            'Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
+            // 編集
+            'Tab', 'Caps', 'Shift', 'Ctrl', 'Alt', 'Win', 'Menu', 'Enter', 'Backspace', 'Space',
+            // 文字
+            '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\',
+            'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/',
+            // ナビゲーション
+            'Home', 'End', 'Insert', 'Delete', 'PageUp', 'PageDown',
+            // 矢印キー
+            '↑', '↓', '←', '→',
+            // テンキー
+            'NumLock', '/', '*', '-', '+', 'Enter', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.',
+        ];
+        // Shiftで変わる記号キー
+        const shiftMap = {
+            '`': '~', '1': '!', '2': '@', '3': '#', '4': '$', '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')',
+            '-': '_', '=': '+', '[': '{', ']': '}', '\\': '|', ';': ':', "'": '"', ',': '<', '.': '>', '/': '?'
+        };
+
+        // Shift記号一覧
+        const shiftKeyList = Object.values(shiftMap);
+
+        // ナビゲーションキー配列（3x2）
+        const navpadKeys = [
+            ['Insert', 'Home', 'PageUp'],
+            ['Delete', 'End', 'PageDown']
+        ];
+        // 矢印キー配列（下に配置）
+        const arrowKeys = [
+            ['', '↑', ''],
+            ['←', '↓', '→']
+        ];
+        // テンキー配列（右端）
+        const numpadKeys = [
+            ['NumLock', '/', '*', '-'],
+            ['7', '8', '9', '+'],
+            ['4', '5', '6', '+'],
+            ['1', '2', '3', 'Enter'],
+            ['0', '0', '.', 'Enter']
+        ];
+
+        // キーボード一覧（US配列・記号は2つセット）
+        const keyChoices = [
+            // 1段目
+            [{ label: 'Esc' }, { label: 'F1' }, { label: 'F2' }, { label: 'F3' }, { label: 'F4' }, { label: 'F5' }, { label: 'F6' }, { label: 'F7' }, { label: 'F8' }, { label: 'F9' }, { label: 'F10' }, { label: 'F11' }, { label: 'F12' }, { label: 'Del' }],
+            // 2段目
+            [
+                { label: '`', shift: '~' }, { label: '1', shift: '!' }, { label: '2', shift: '@' }, { label: '3', shift: '#' }, { label: '4', shift: '$' }, { label: '5', shift: '%' }, { label: '6', shift: '^' }, { label: '7', shift: '&' }, { label: '8', shift: '*' }, { label: '9', shift: '(' }, { label: '0', shift: ')' }, { label: '-', shift: '_' }, { label: '=', shift: '+' }, { label: 'Backspace' }
+            ],
+            // 3段目
+            [
+                { label: 'Tab' }, { label: 'Q' }, { label: 'W' }, { label: 'E' }, { label: 'R' }, { label: 'T' }, { label: 'Y' }, { label: 'U' }, { label: 'I' }, { label: 'O' }, { label: 'P' }, { label: '[', shift: '{' }, { label: ']', shift: '}' }, { label: '\\', shift: '|' }
+            ],
+            // 4段目
+            [
+                { label: 'Caps' }, { label: 'A' }, { label: 'S' }, { label: 'D' }, { label: 'F' }, { label: 'G' }, { label: 'H' }, { label: 'J' }, { label: 'K' }, { label: 'L' }, { label: ';', shift: ':' }, { label: "'", shift: '"' }, { label: 'Enter' }, {}
+            ],
+            // 5段目
+            [
+                { label: 'Shift' }, { label: 'Z' }, { label: 'X' }, { label: 'C' }, { label: 'V' }, { label: 'B' }, { label: 'N' }, { label: 'M' }, { label: ',', shift: '<' }, { label: '.', shift: '>' }, { label: '/', shift: '?' }, { label: 'Shift' }, {}, {}
+            ],
+            // 6段目
+            [
+                { label: 'Ctrl' }, { label: 'Win' }, { label: 'Alt' }, {}, { label: 'Space' }, {}, { label: 'Alt' }, { label: 'Win' }, { label: 'Menu' }, { label: 'Ctrl' }, {}, {}, {}, {}
+            ]
+            // 7段目（矢印・ナビゲーションキー）は削除
+        ];
+
+        // テンキー選択用
+        const numpadChoices = [
+            ['NumLock', '/', '*', '-'],
+            ['7', '8', '9', '+'],
+            ['4', '5', '6', '+'],
+            ['1', '2', '3', 'Enter'],
+            ['0', '0', '.', 'Enter']
+        ];
+
+        // キー選択ダイアログ
+        function showKeySelect(currentKey, callback) {
+            removeDialog();
+            const dialog = document.createElement('div');
+            dialog.className = 'key-select-dialog';
+            dialog.id = 'key-select-dialog';
+
+            const kb = document.createElement('div');
+            kb.className = 'key-select-kb';
+
+            // メインキーボード
+            const mainCol = document.createElement('div');
+            mainCol.className = 'key-select-col';
+            keyChoices.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(keyObj => {
+                    if (!keyObj || !keyObj.label) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    // 通常キー
+                    const btn = document.createElement('button');
+                    btn.textContent = keyObj.label;
+                    if (keyObj.label === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(keyObj.label);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+
+                    // Shiftキーがある場合はShift記号も同じボタンで表示
+                    if (keyObj.shift) {
+                        const shiftBtn = document.createElement('button');
+                        shiftBtn.textContent = keyObj.shift;
+                        shiftBtn.onclick = () => {
+                            callback(keyObj.shift);
+                            dialog.remove();
+                        };
+                        if (keyObj.shift === currentKey) shiftBtn.style.background = '#cce';
+                        rowDiv.appendChild(shiftBtn);
+                    }
+                });
+                mainCol.appendChild(rowDiv);
+            });
+            kb.appendChild(mainCol);
+
+            // ナビゲーションキー
+            const navCol = document.createElement('div');
+            navCol.className = 'key-select-col';
+            navpadKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                navCol.appendChild(rowDiv);
+            });
+            // 矢印キー
+            arrowKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                navCol.appendChild(rowDiv);
+            });
+            kb.appendChild(navCol);
+
+            // テンキー
+            const numpadCol = document.createElement('div');
+            numpadCol.className = 'key-select-col';
+            numpadKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                numpadCol.appendChild(rowDiv);
+            });
+            kb.appendChild(numpadCol);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'キャンセル';
+            cancelBtn.style.marginTop = '10px';
+            cancelBtn.onclick = () => dialog.remove();
+
+            dialog.appendChild(kb);
+            dialog.appendChild(cancelBtn);
+            document.body.appendChild(dialog);
+        }
+
+        // ダイアログ削除
+        function removeDialog() {
+            let old = document.getElementById('key-select-dialog');
+            if (old) old.remove();
+        }
+
+        // メインキーボード生成
+        keys.forEach((row, rowIdx) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'keyboard-row';
+            rowDiv.style.gridTemplateColumns = rowTemplates[rowIdx];
+            row.forEach((key, colIdx) => {
+                if (!key) {
+                    const empty = document.createElement('div');
+                    rowDiv.appendChild(empty);
+                    return;
+                }
+                const btn = document.createElement('button');
+                btn.className = 'key';
+                btn.textContent = key;
+                btn.onclick = function () {
+                    showKeySelect(btn.textContent, function (newKey) {
+                        btn.textContent = newKey;
+                    });
+                };
+                rowDiv.appendChild(btn);
+            });
+            keyboard.appendChild(rowDiv);
+        });
+
+        // ナビゲーションキー生成（3x2）
+        const navpad = document.getElementById('navpad');
+        navpadKeys.forEach(row => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'navpad-row';
+            row.forEach(key => {
+                if (!key) {
+                    const empty = document.createElement('div');
+                    rowDiv.appendChild(empty);
+                    return;
+                }
+                const btn = document.createElement('button');
+                btn.className = 'key';
+                btn.textContent = key;
+                btn.onclick = function () {
+                    showKeySelect(btn.textContent, function (newKey) {
+                        btn.textContent = newKey;
+                    });
+                };
+                rowDiv.appendChild(btn);
+            });
+            navpad.appendChild(rowDiv);
+        });
+        // 矢印キー生成（ナビゲーションキーの下）
+        arrowKeys.forEach(row => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'arrow-row';
+            row.forEach(key => {
+                if (!key) {
+                    const empty = document.createElement('div');
+                    rowDiv.appendChild(empty);
+                    return;
+                }
+                const btn = document.createElement('button');
+                btn.className = 'key';
+                btn.textContent = key;
+                btn.onclick = function () {
+                    showKeySelect(btn.textContent, function (newKey) {
+                        btn.textContent = newKey;
+                    });
+                };
+                rowDiv.appendChild(btn);
+            });
+            navpad.appendChild(rowDiv);
+        });
+
+        // テンキー生成（右端）
+        const numpad = document.getElementById('numpad');
+        numpadKeys.forEach((row, rowIdx) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'numpad-row';
+            rowDiv.style.gridTemplateColumns = `repeat(${row.length}, 1fr)`;
+            row.forEach((key, colIdx) => {
+                if (!key) {
+                    const empty = document.createElement('div');
+                    rowDiv.appendChild(empty);
+                    return;
+                }
+                const btn = document.createElement('button');
+                btn.className = 'key';
+                btn.textContent = key;
+                btn.onclick = function () {
+                    showKeySelect(btn.textContent, function (newKey) {
+                        btn.textContent = newKey;
+                    });
+                };
+                rowDiv.appendChild(btn);
+            });
+            numpad.appendChild(rowDiv);
+        });
+
+        // キー選択ダイアログ（ナビゲーション・矢印・テンキーも同じ配置で表示）
+        function showKeySelect(currentKey, callback) {
+            removeDialog();
+            const dialog = document.createElement('div');
+            dialog.className = 'key-select-dialog';
+            dialog.id = 'key-select-dialog';
+
+            const kb = document.createElement('div');
+            kb.className = 'key-select-kb';
+
+            // メインキーボード
+            const mainCol = document.createElement('div');
+            mainCol.className = 'key-select-col';
+            keyChoices.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(keyObj => {
+                    if (!keyObj || !keyObj.label) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = keyObj.label;
+                    if (keyObj.label === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(keyObj.label);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                    if (keyObj.shift) {
+                        const shiftBtn = document.createElement('button');
+                        shiftBtn.textContent = keyObj.shift;
+                        shiftBtn.onclick = () => {
+                            callback(keyObj.shift);
+                            dialog.remove();
+                        };
+                        if (keyObj.shift === currentKey) shiftBtn.style.background = '#cce';
+                        rowDiv.appendChild(shiftBtn);
+                    }
+                });
+                mainCol.appendChild(rowDiv);
+            });
+            kb.appendChild(mainCol);
+
+            // ナビゲーションキー
+            const navCol = document.createElement('div');
+            navCol.className = 'key-select-col';
+            navpadKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                navCol.appendChild(rowDiv);
+            });
+            // 矢印キー
+            arrowKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                navCol.appendChild(rowDiv);
+            });
+            kb.appendChild(navCol);
+
+            // テンキー
+            const numpadCol = document.createElement('div');
+            numpadCol.className = 'key-select-col';
+            numpadKeys.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-select-row';
+                row.forEach(k => {
+                    if (!k) {
+                        const empty = document.createElement('div');
+                        empty.style.width = '32px';
+                        rowDiv.appendChild(empty);
+                        return;
+                    }
+                    const btn = document.createElement('button');
+                    btn.textContent = k;
+                    if (k === currentKey) btn.style.background = '#cce';
+                    btn.onclick = () => {
+                        callback(k);
+                        dialog.remove();
+                    };
+                    rowDiv.appendChild(btn);
+                });
+                numpadCol.appendChild(rowDiv);
+            });
+            kb.appendChild(numpadCol);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'キャンセル';
+            cancelBtn.style.marginTop = '10px';
+            cancelBtn.onclick = () => dialog.remove();
+
+            dialog.appendChild(kb);
+            dialog.appendChild(cancelBtn);
+            document.body.appendChild(dialog);
+        }
+    </script>
+</body>
+
+</html>
