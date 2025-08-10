@@ -25,7 +25,6 @@ sendSpaceAnyC(key) {
 
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
 
-chks := Map
 
 *y:: sendSpaceAny("vkF3sc029") ; y → Esc
 *u:: sendSpaceAny("Home")      ; u → Home
@@ -40,10 +39,10 @@ chks := Map
 *;:: sendSpaceAny("Enter")     ; ; → Enter
 
 *n:: sendSpaceAny("Delete")    ; n → Delete
-*m:: sendSpaceAny("vk1Csc079") ; m → 無変換
+*m:: sendSpaceAny("vk1Dsc07B") ; m → 無変換
 *,:: sendSpaceAny("PgUp")      ; , → PageUp
 *.:: sendSpaceAny("PgDn")      ; . → PageDown
-*/:: sendSpaceAny("vkF3sc029") ; / → Esc
+*/:: sendSpaceAny("vk1Csc079") ; / → 変換
 
 *1:: sendSpaceAny("F1")        ; 1 → F1
 *2:: sendSpaceAny("F2")        ; 2 → F2
@@ -77,19 +76,22 @@ chks := Map
 *b:: sendSpaceAnyC("@")        ; b → @
 
 +*q:: sendSpaceAnyC("$")       ; Shift+q → $
-+*w:: sendSpaceAnyC("%%")      ; Shift+w → %
++*w:: sendSpaceAnyC("%")       ; Shift+w → %
 +*e:: sendSpaceAnyC("(")       ; Shift+e → (
 +*r:: sendSpaceAnyC(")")       ; Shift+r → )
++*t:: sendSpaceAnyC("#")       ; Shift+r → )
 
 +*a:: sendSpaceAnyC(":")       ; Shift+a → :
 +*s:: sendSpaceAnyC(";")       ; Shift+s → ;
 +*d:: sendSpaceAnyC("{")       ; Shift+d → {
 +*f:: sendSpaceAnyC("}")       ; Shift+f → }
++*g:: sendSpaceAnyC("!")       ; Shift+f → }
 
 +*z:: sendSpaceAnyC("'")       ; Shift+z → '
 +*x:: sendSpaceAnyC("`"")      ; Shift+x → "
 +*c:: sendSpaceAnyC("[")       ; Shift+c → [
 +*v:: sendSpaceAnyC("]")       ; Shift+v → ]
+;+*b:: sendSpaceAnyC("]")       ; Shift+v → ]
 
 *-:: sendSpaceAny("BROWSER_BACK") ; - → ブラウザ戻る
 if (isJIS) {
@@ -101,10 +103,9 @@ else {
 
 *[:: sendSpaceAny("Volume_Down")    ; [ → 音量ダウン
 *]:: sendSpaceAny("Volume_Up")      ; ] → 音量アップ
-*Enter:: sendSpaceAny("WheelDown")  ; Enter → ホイールダウン
-*BackSpace:: sendSpaceAny("WheelUp") ; BackSpace → ホイールアップ
+*Enter:: sendSpaceAny("WheelDown 4")  ; Enter → ホイールダウン
+*BackSpace:: sendSpaceAny("WheelUp 4") ; BackSpace → ホイールアップ
 
 #HotIf
 
-;#Include MyHotString.ahk
 ;#Include MyHotString.ahk
