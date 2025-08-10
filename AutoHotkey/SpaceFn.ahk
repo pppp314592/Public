@@ -109,6 +109,11 @@ else {
 *Enter:: sendSpaceAny("WheelDown 4")  ; Enter → ホイールダウン
 *BackSpace:: sendSpaceAny("WheelUp 4") ; BackSpace → ホイールアップ
 
++*':: GUI_test(true) ; ' → カタカナひらがな
+*':: GUI_test() ; ' → カタカナひらがな
+
+
 #HotIf
 
 ;#Include MyHotString.ahk
+#Include TestGUI.ahk
