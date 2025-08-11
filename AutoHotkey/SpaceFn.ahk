@@ -26,13 +26,13 @@ sendSpaceAnyC(key) {
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
 
 ; --- 方向・編集キー ---
-*y:: sendSpaceAny("vkF3sc029") ; y → Esc
+*y:: sendSpaceAny("ESC")       ; y → Esc
 *u:: sendSpaceAny("Home")      ; u → Home
 *i:: sendSpaceAny("Up")        ; i → ↑
 *o:: sendSpaceAny("End")       ; o → End
 *p:: sendSpaceAny("Backspace") ; p → Backspace
 
-*h:: sendSpaceAny("ESC")       ; h → Esc
+*h:: sendSpaceAny("vkF3sc029") ; h → 半角/全角
 *j:: sendSpaceAny("Left")      ; j → ←
 *k:: sendSpaceAny("Down")      ; k → ↓
 *l:: sendSpaceAny("Right")     ; l → →
@@ -109,8 +109,8 @@ else {
 *Enter:: sendSpaceAny("WheelDown 4")  ; Enter → ホイールダウン
 *BackSpace:: sendSpaceAny("WheelUp 4") ; BackSpace → ホイールアップ
 
-+*':: GUI_test(true) ; ' → カタカナひらがな
-*':: GUI_test() ; ' → カタカナひらがな
++*':: GUI_test(true) ; layer2.jpg
+*':: GUI_test() ; layer1.jpg
 
 
 #HotIf
