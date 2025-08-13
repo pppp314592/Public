@@ -39,10 +39,12 @@ sendSpaceAnyC(key) {
 *;:: sendSpaceAny("Enter")     ; ; → Enter
 
 *n:: sendSpaceAny("Delete")    ; n → Delete
-*m:: sendSpaceAny("vk1Dsc07B") ; m → 無変換
+*m:: sendSpaceAny("Enter") ; m → 無変換
+;*m:: sendSpaceAny("vk1Dsc07B") ; m → 無変換
 *,:: sendSpaceAny("PgUp")      ; , → PageUp
 *.:: sendSpaceAny("PgDn")      ; . → PageDown
-*/:: sendSpaceAny("vk1Csc079") ; / → 変換
+*/:: sendSpaceAny("AppsKey")     ; / → Enter
+;*/:: sendSpaceAny("vk1Csc079") ; / → 変換
 
 ; --- ファンクションキー ---
 *1:: sendSpaceAny("F1")        ; 1 → F1
@@ -55,8 +57,10 @@ sendSpaceAnyC(key) {
 *8:: sendSpaceAny("F8")        ; 8 → F8
 *9:: sendSpaceAny("F9")        ; 9 → F9
 *0:: sendSpaceAny("F10")       ; 0 → F10
-*ESC:: sendSpaceAnyC("F11")    ; ESC → F11
-*TAB:: sendSpaceAnyC("F12")    ; TAB → F12
+; *ESC:: sendSpaceAnyC("F11")    ; ESC → F11
+; *TAB:: sendSpaceAnyC("F12")    ; TAB → F12
+*ESC:: sendSpaceAnyC("``")     ; ESC → &
+*Tab:: sendSpaceAnyC("|")      ; Tab → |
 
 ; --- 記号キー ---
 *q:: sendSpaceAnyC("&")        ; q → &
@@ -78,6 +82,9 @@ sendSpaceAnyC(key) {
 *b:: sendSpaceAnyC("@")        ; b → @
 
 ; --- Shift+記号キー ---
++*ESC:: sendSpaceAnyC("~")      ; Shft+Tab → \
++*Tab:: sendSpaceAnyC("\")      ; Shft+Tab → \
+
 +*q:: sendSpaceAnyC("$")       ; Shift+q → $
 +*w:: sendSpaceAnyC("\")       ; Shift+w → \
 +*e:: sendSpaceAnyC("?")       ; Shift+e → ?
@@ -90,24 +97,25 @@ sendSpaceAnyC(key) {
 +*f:: sendSpaceAnyC("{")       ; Shift+f → {
 +*g:: sendSpaceAnyC("}")       ; Shift+g → }
 
-+*z:: sendSpaceAnyC("``")      ; Shift+z → `
-+*x:: sendSpaceAnyC("~")       ; Shift+x → ~
++*z:: sendSpaceAnyC("&")      ; Shift+z → `
 +*c:: sendSpaceAnyC(";")       ; Shift+c → ;
-+*v:: sendSpaceAnyC("`"")      ; Shift+v → "
++*v:: sendSpaceAnyC("`"")      ; Shift+v → "@
 
 ; --- その他 ---
-*-:: sendSpaceAny("BROWSER_BACK") ; - → ブラウザ戻る
+*-:: sendSpaceAny("F11") ; - → F11
 if (isJIS) {
-    *^:: sendSpaceAny("BROWSER_FORWARD") ; JIS: ^ → ブラウザ進む
+    *^:: sendSpaceAny("F12") ; ^ → F12
 }
 else {
-    *=:: sendSpaceAny("BROWSER_FORWARD") ; US: = → ブラウザ進む
+    *=:: sendSpaceAny("F12") ; US: ^ → F12
 }
 
-*[:: sendSpaceAny("Volume_Down")    ; [ → 音量ダウン
-*]:: sendSpaceAny("Volume_Up")      ; ] → 音量アップ
-*Enter:: sendSpaceAny("WheelDown 4")  ; Enter → ホイールダウン
-*BackSpace:: sendSpaceAny("WheelUp 4") ; BackSpace → ホイールアップ
+*[:: sendSpaceAny("Volume_Down")        ; [ → 音量ダウン
+*]:: sendSpaceAny("Volume_Up")          ; ] → 音量アップ
++*[:: sendSpaceAny("BROWSER_BACK")      ; Shift + [ → ブラウザ戻る
++*]:: sendSpaceAny("BROWSER_FORWARD")   ; Shift + ] → ブラウザ進む
+*Enter:: sendSpaceAny("WheelDown 4")    ; Enter → ホイールダウン
+*BackSpace:: sendSpaceAny("WheelUp 4")  ; BackSpace → ホイールアップ
 
 +*':: GUI_test(true) ; layer2.jpg
 *':: GUI_test() ; layer1.jpg
@@ -116,4 +124,5 @@ else {
 #HotIf
 
 ;#Include MyHotString.ahk
+; #Include ForSplashtop.ahk
 #Include TestGUI.ahk
