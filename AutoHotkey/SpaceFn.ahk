@@ -25,40 +25,51 @@ sendSpaceAnyC(key) {
 
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
 
+
 ; --- 方向・編集キー ---
 *y:: sendSpaceAny("ESC")       ; y → Esc
-*u:: sendSpaceAny("Home")      ; u → Home
++*u:: sendSpaceAnyC("vkF2sc070")      ; Shift + u → IME On
+;*u:: sendSpaceAnyC("vkF2sc070 `" `"vkF3sc029")      ; u → IME Off
+*u:: {
+    sendSpaceAnyC("vkF2sc070")      ; u → IME Off
+    sendSpaceAnyC("vkF3sc029")      ; u → IME Off
+}
 *i:: sendSpaceAny("Up")        ; i → ↑
-*o:: sendSpaceAny("End")       ; o → End
-*p:: sendSpaceAny("Backspace") ; p → Backspace
+*o:: sendSpaceAny("Delete")       ; o → End
+*p:: sendSpaceAny("BackSpace") ; p → Backspace
 
-*h:: sendSpaceAny("vkF3sc029") ; h → 半角/全角
+*h:: sendSpaceAny("TAB") ; h → 半角/全角
 *j:: sendSpaceAny("Left")      ; j → ←
 *k:: sendSpaceAny("Down")      ; k → ↓
 *l:: sendSpaceAny("Right")     ; l → →
 *;:: sendSpaceAny("Enter")     ; ; → Enter
 
-*n:: sendSpaceAny("Delete")    ; n → Delete
-*m:: sendSpaceAny("Enter") ; m → 無変換
+*n:: sendSpaceAny("vk1Dsc07B")    ; n → Delete
+*m:: sendSpaceAny("Home") ; m → 無変換
 ;*m:: sendSpaceAny("vk1Dsc07B") ; m → 無変換
 *,:: sendSpaceAny("PgUp")      ; , → PageUp
 *.:: sendSpaceAny("PgDn")      ; . → PageDown
-*/:: sendSpaceAny("AppsKey")     ; / → Enter
+*/:: sendSpaceAny("End")     ; / → Enter
 ;*/:: sendSpaceAny("vk1Csc079") ; / → 変換
 
 ; --- ファンクションキー ---
-*1:: sendSpaceAny("F1")        ; 1 → F1
-*2:: sendSpaceAny("F2")        ; 2 → F2
-*3:: sendSpaceAny("F3")        ; 3 → F3
-*4:: sendSpaceAny("F4")        ; 4 → F4
-*5:: sendSpaceAny("F5")        ; 5 → F5
-*6:: sendSpaceAny("F6")        ; 6 → F6
-*7:: sendSpaceAny("F7")        ; 7 → F7
-*8:: sendSpaceAny("F8")        ; 8 → F8
-*9:: sendSpaceAny("F9")        ; 9 → F9
-*0:: sendSpaceAny("F10")       ; 0 → F10
-; *ESC:: sendSpaceAnyC("F11")    ; ESC → F11
-; *TAB:: sendSpaceAnyC("F12")    ; TAB → F12
+*1:: sendSpaceAny("F1")         ; 1 → F1
+*2:: sendSpaceAny("F2")         ; 2 → F2
+*3:: sendSpaceAny("F3")         ; 3 → F3
+*4:: sendSpaceAny("F4")         ; 4 → F4
+*5:: sendSpaceAny("F5")         ; 5 → F5
+*6:: sendSpaceAny("F6")         ; 6 → F6
+*7:: sendSpaceAny("F7")         ; 7 → F7
+*8:: sendSpaceAny("F8")         ; 8 → F8
+*9:: sendSpaceAny("F9")         ; 9 → F9
+*0:: sendSpaceAny("F10")        ; 0 → F10
+*-:: sendSpaceAny("F11")        ; - → F11
+if (isJIS) {
+    *^:: sendSpaceAny("F12") ; ^ → F12
+}
+else {
+    *=:: sendSpaceAny("F12") ; US: ^ → F12
+}
 *ESC:: sendSpaceAnyC("``")     ; ESC → &
 *Tab:: sendSpaceAnyC("|")      ; Tab → |
 
@@ -100,15 +111,11 @@ sendSpaceAnyC(key) {
 +*z:: sendSpaceAnyC("&")      ; Shift+z → `
 +*c:: sendSpaceAnyC(";")       ; Shift+c → ;
 +*v:: sendSpaceAnyC("`"")      ; Shift+v → "@
+;*\:: MsgBox("AppKey") ; アプリケーションキー
+
 
 ; --- その他 ---
-*-:: sendSpaceAny("F11") ; - → F11
-if (isJIS) {
-    *^:: sendSpaceAny("F12") ; ^ → F12
-}
-else {
-    *=:: sendSpaceAny("F12") ; US: ^ → F12
-}
+
 
 *[:: sendSpaceAny("Volume_Down")        ; [ → 音量ダウン
 *]:: sendSpaceAny("Volume_Up")          ; ] → 音量アップ
