@@ -1,4 +1,4 @@
-﻿; SpaceFn 実装
+; SpaceFn 実装
 SpaceFnMode := false, SpaceAny := false, SpaceDownTime := 0
 SpaceMaxTime := 300
 isJIS := (GetKeySC("¥") == "07D") ; JISキーボード判定
@@ -23,33 +23,38 @@ sendSpaceAnyC(key) {
     SendEvent "{" key "}"
 }
 
+
+#F:: SendInput("F")
+
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
 
 
 ; --- 方向・編集キー ---
 *y:: sendSpaceAny("ESC")       ; y → Esc
-+*u:: sendSpaceAnyC("vkF2sc070")      ; Shift + u → IME On
-;*u:: sendSpaceAnyC("vkF2sc070 `" `"vkF3sc029")      ; u → IME Off
-*u:: {
-    sendSpaceAnyC("vkF2sc070")      ; u → IME Off
-    sendSpaceAnyC("vkF3sc029")      ; u → IME Off
-}
+*u:: sendSpaceAny("Home")      ; u → Home
 *i:: sendSpaceAny("Up")        ; i → ↑
-*o:: sendSpaceAny("Delete")       ; o → End
-*p:: sendSpaceAny("BackSpace") ; p → Backspace
+*o:: sendSpaceAny("End")       ; o → End
+*p:: sendSpaceAny("Backspace") ; p → Backspace
 
-*h:: sendSpaceAny("TAB") ; h → 半角/全角
+;*h:: sendSpaceAny("vkF3sc029") ; h → 半角/全角
+*h:: sendSpaceAny("Delete") ; h → 半角/全角
+;+*h:: sendSpaceAny("_") ; h → 半角/全角
 *j:: sendSpaceAny("Left")      ; j → ←
 *k:: sendSpaceAny("Down")      ; k → ↓
 *l:: sendSpaceAny("Right")     ; l → →
 *;:: sendSpaceAny("Enter")     ; ; → Enter
 
-*n:: sendSpaceAny("vk1Dsc07B")    ; n → Delete
-*m:: sendSpaceAny("Home") ; m → 無変換
-;*m:: sendSpaceAny("vk1Dsc07B") ; m → 無変換
-*,:: sendSpaceAny("PgUp")      ; , → PageUp
-*.:: sendSpaceAny("PgDn")      ; . → PageDown
-*/:: sendSpaceAny("End")     ; / → Enter
+*n:: sendSpaceAny("-")    ; n → Delete
++*n:: sendSpaceAny("_")    ; n → Delete
+*m:: sendSpaceAnyC("(") ; m → 無変換
++*m:: sendSpaceAnyC("{") ; m → 無変換
+;*m:: sendSpaceAny(" vk1Dsc07B") ; m → 無変換
+*,:: sendSpaceAny("[")      ; , → PageUp
+*.:: sendSpaceAny("]")      ; . → PageDown
+; *,:: sendSpaceAny("PgUp")      ; , → PageUp
+; *.:: sendSpaceAny("PgDn")      ; . → PageDown
+*/:: sendSpaceAnyC(")")     ; / → Enter
++*/:: sendSpaceAnyC("}")     ; / → Enter
 ;*/:: sendSpaceAny("vk1Csc079") ; / → 変換
 
 ; --- ファンクションキー ---
@@ -111,7 +116,6 @@ else {
 +*z:: sendSpaceAnyC("&")      ; Shift+z → `
 +*c:: sendSpaceAnyC(";")       ; Shift+c → ;
 +*v:: sendSpaceAnyC("`"")      ; Shift+v → "@
-;*\:: MsgBox("AppKey") ; アプリケーションキー
 
 
 ; --- その他 ---
@@ -123,6 +127,8 @@ else {
 +*]:: sendSpaceAny("BROWSER_FORWARD")   ; Shift + ] → ブラウザ進む
 *Enter:: sendSpaceAny("WheelDown 4")    ; Enter → ホイールダウン
 *BackSpace:: sendSpaceAny("WheelUp 4")  ; BackSpace → ホイールアップ
+*\:: sendSpaceAny("Volume_Mute") ; アプリケーションキー
+;+*\:: sendSpaceAnyC("Launch_Media") ; アプリケ ーションキー
 
 +*':: GUI_test(true) ; layer2.jpg
 *':: GUI_test() ; layer1.jpg
