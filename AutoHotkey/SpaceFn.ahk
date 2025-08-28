@@ -14,18 +14,31 @@ isJIS := (GetKeySC("¥") == "07D") ; JISキーボード判定
         Send "{Blind}{Space}"
     SpaceFnMode := false, SpaceAny := false
 }
+
+FuncList := Array(
+    "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"
+    , "ESC", "Up", "Down", "Left", "Right", "Home", "End", "Backspace", "Delete", "Enter"
+    , "Volume_Down", "Volume_Up", "Volume_Mute", "BROWSER_BACK", "BROWSER_FORWARD"
+    , "PgUp", "PgDn"
+)
+
 sendSpaceAny(key) {
     global SpaceAny := true
-    SendEvent "{Blind}{" key "}"
-}
-sendSpaceAnyC(key) {
-    global SpaceAny := true
-    SendEvent "{" key "}"
+    isHit := false
+    for index, value in FuncList {
+        if (value = key)
+            isHit := true
+    }
+    if (GetKeyState("LControl", "P") && GetKeyState("LWin", "P") && GetKeyState("LAlt", "P"))
+        isHit := false
+    if (isHit)
+        SendEvent "{Blind}{" key "}"
+    else
+        SendEvent "{" key "}"
+    ;ToolTip(key . GetKeyState("LControl", "P") . GetKeyState("LWin", "P") . GetKeyState("LAlt", "P"))  ; デバッグ用
 }
 
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
-
-
 ; --- ファンクションキー ---
 *1:: sendSpaceAny("F1")
 *2:: sendSpaceAny("F2")
@@ -37,84 +50,79 @@ sendSpaceAnyC(key) {
 *8:: sendSpaceAny("F8")
 *9:: sendSpaceAny("F9")
 *0:: sendSpaceAny("F10")
-*-:: sendSpaceAny("F11")
-if (isJIS) {
-    *^:: sendSpaceAny("F12")
-}
-else {
-    *=:: sendSpaceAny("F12")
-}
-
+; *-:: sendSpaceAny("F11")
+; *^:: {
+;     if (isJIS)
+;         sendSpaceAny("F12")
+;     else
+;         sendSpaceAny("^")
+; }
+; *=:: {
+;     if (!isJIS)
+;         sendSpaceAny("F12")
+;     else
+;         sendSpaceAny("=")
+; }
 ; --- QWERT ---
-*q:: sendSpaceAnyC("&")
-*w:: sendSpaceAnyC("|")
-*e:: sendSpaceAnyC("!")
-*r:: sendSpaceAnyC("/")
-;*t:: sendSpaceAnyC("(")
-+*q:: sendSpaceAnyC("$")
-+*w:: sendSpaceAnyC("\")
-+*e:: sendSpaceAnyC("?")
-;+*r:: sendSpaceAnyC("/")
-;+*t:: sendSpaceAnyC("¥")
-
+*q:: sendSpaceAny("F11")
+*w:: sendSpaceAny("F12")
+*e:: sendSpaceAny("!")
+*r:: sendSpaceAny("&")
+*t:: sendSpaceAny("|")
+;+*q:: sendSpaceAny("$")
+;+*w:: sendSpaceAny("\")
++*e:: sendSpaceAny("?")
++*r:: sendSpaceAny("$")
++*t:: sendSpaceAny("@")
 ; --- YUIOP ---
 *y:: sendSpaceAny("ESC")
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
 *p:: sendSpaceAny("Backspace")
-
-
 ; --- ASDFG ---
-*a:: sendSpaceAnyC("+")
-*s:: sendSpaceAnyC("-")
-*d:: sendSpaceAnyC("*")
-*f:: sendSpaceAnyC("/")
-;*g:: sendSpaceAnyC("[")
-+*a:: sendSpaceAnyC("#")
-+*s:: sendSpaceAnyC("_")
-+*d:: sendSpaceAnyC("^")
-+*f:: sendSpaceAnyC("%")
-;+*g:: sendSpaceAnyC("}")
-
+*a:: sendSpaceAny("+")
+*s:: sendSpaceAny("-")
+*d:: sendSpaceAny("*")
+*f:: sendSpaceAny("/")
+*g:: sendSpaceAny("=")
++*a:: sendSpaceAny("#")
++*s:: sendSpaceAny("_")
++*d:: sendSpaceAny("^")
++*f:: sendSpaceAny("%")
++*g:: sendSpaceAny(":")
 ; --- HJKL; ---
 *h:: sendSpaceAny("Delete")
 *j:: sendSpaceAny("Left")
 *k:: sendSpaceAny("Down")
 *l:: sendSpaceAny("Right")
 *;:: sendSpaceAny("Enter")
-;+*h:: sendSpaceAnyC("]")
-
-
 ; --- ZXCVB ---
-*z:: sendSpaceAnyC("=")
-*x:: sendSpaceAnyC(";")
-*c:: sendSpaceAnyC(":")
-*v:: sendSpaceAnyC("¥")
-*b:: sendSpaceAnyC("@")
-+*z:: sendSpaceAnyC("^")
-+*x:: sendSpaceAnyC("%")
-;+*c:: sendSpaceAnyC("%")
-;+*v:: sendSpaceAnyC("¥")
-;+*b:: sendSpaceAnyC("@")
-
+*z:: sendSpaceAny("(")
+*x:: sendSpaceAny(")")
+*c:: sendSpaceAny("[")
+*v:: sendSpaceAny("]")
+*b:: sendSpaceAny("\")
++*z:: sendSpaceAny("{")
++*x:: sendSpaceAny("}")
++*c:: sendSpaceAny("{")
++*v:: sendSpaceAny("}")
++*b:: sendSpaceAny("¥")
 ; --- NM,./ ---
-*n:: sendSpaceAnyC("[")
-*m:: sendSpaceAnyC("]")
-*,:: sendSpaceAnyC("(")
-*.:: sendSpaceAnyC(")")
-*/:: sendSpaceAnyC("'")
-+*n:: sendSpaceAnyC("{")
-+*m:: sendSpaceAnyC("}")
-+*,:: sendSpaceAnyC("<")
-+*.:: sendSpaceAnyC(">")
-+*/:: sendSpaceAnyC("`"")
-
-
-*ESC:: sendSpaceAnyC("``")
-*Tab:: sendSpaceAny("Delete")
-+*ESC:: sendSpaceAnyC("~")
-;+*Tab:: sendSpaceAnyC("\")
+; *n:: sendSpaceAny("[")
+; *m:: sendSpaceAny("]")
+*,:: sendSpaceAny("PgUp")
+*.:: sendSpaceAny("PgDn")
+; */:: sendSpaceAny("'")
+; +*n:: sendSpaceAny("{")
+; +*m:: sendSpaceAny("}")
+; +*,:: sendSpaceAny("<")
+; +*.:: sendSpaceAny(">")
+; +*/:: sendSpaceAny("`"")
+*ESC:: sendSpaceAny("``")
+*Tab:: sendSpaceAny("'")
++*ESC:: sendSpaceAny("~")
++*Tab:: sendSpaceAny("`"")
 
 
 ; --- その他 ---
@@ -125,48 +133,52 @@ else {
 *Enter:: sendSpaceAny("WheelDown 4")
 *BackSpace:: sendSpaceAny("WheelUp 4")
 *\:: sendSpaceAny("Volume_Mute")
-;+*\:: sendSpaceAnyC("Launch_Media")
+;+*\:: sendSpaceAny("Launch_Media")
+; if (isJIS) {
+;     ;     *SC027:: GUI_test() ; layer1.jpg
+;     ;     +*SC027:: GUI_test(true) ; layer2.jpg
+;     ; } else {
+;     *':: GUI_test() ; layer1.jpg
+;     +*':: GUI_test(true) ; layer2.jpg
+; }
+*':: {
+    if (!isJIS)
+        GUI_test() ; layer1.jpg
+    else
+        SendInput "{Blind}{'}"
+}
 
-*':: GUI_test() ; layer1.jpg
-+*':: GUI_test(true) ; layer2.jpg
-
-
+#HotIf !SpaceFnMode
 ; --- NumPad ---
-<!<^<#*n:: sendSpaceAnyC("Numpad0")
-<!<^<#*m:: sendSpaceAnyC("Numpad1")
-<!<^<#*,:: sendSpaceAnyC("Numpad2")
-<!<^<#*.:: sendSpaceAnyC("Numpad3")
-<!<^<#*j:: sendSpaceAnyC("Numpad4")
-<!<^<#*k:: sendSpaceAnyC("Numpad5")
-<!<^<#*l:: sendSpaceAnyC("Numpad6")
-<!<^<#*u:: sendSpaceAnyC("Numpad7")
-<!<^<#*i:: sendSpaceAnyC("Numpad8")
-<!<^<#*o:: sendSpaceAnyC("Numpad9")
-<!<^<#*/:: sendSpaceAnyC(".")
-;<!<^<#*/:: sendSpaceAnyC("NumpadDot")
-<!<^<#*h:: sendSpaceAnyC("=")
-<!<^<#*;:: sendSpaceAnyC("NumpadEnter")
-<!<^<#*Enter:: sendSpaceAnyC("NumpadEnter")
-<!<^<#*p:: sendSpaceAnyC("Backspace")
-<!<^<#*BackSpace:: sendSpaceAnyC("Backspace")
-<!<^<#*Tab:: sendSpaceAnyC("NumpadDel")
-;<!<^<#*c:: sendSpaceAnyC("NumpadClear")
-<!<^<#*f:: sendSpaceAnyC("NumpadAdd")
-<!<^<#*g:: sendSpaceAnyC("NumpadSub")
-<!<^<#*v:: sendSpaceAnyC("NumpadMult")
-<!<^<#*b:: sendSpaceAnyC("NumpadDiv")
-<!<^<#*[:: sendSpaceAnyC("(")
-<!<^<#*]:: sendSpaceAnyC(")")
-<!<^<#*7:: sendSpaceAnyC("Left")
-<!<^<#*8:: sendSpaceAnyC("Up")
-<!<^<#*9:: sendSpaceAnyC("Down")
-<!<^<#*0:: sendSpaceAnyC("Right")
-<!<^<#*ESC:: sendSpaceAnyC("NumLock")
+; <!<^<#*m:: sendSpaceAny("Numpad0")
+<!<^<#*,:: sendSpaceAny("Numpad0")
+<!<^<#*j:: sendSpaceAny("Numpad1")
+<!<^<#*k:: sendSpaceAny("Numpad2")
+<!<^<#*l:: sendSpaceAny("Numpad3")
+<!<^<#*u:: sendSpaceAny("Numpad4")
+<!<^<#*i:: sendSpaceAny("Numpad5")
+<!<^<#*o:: sendSpaceAny("Numpad6")
+<!<^<#*7:: sendSpaceAny("Numpad7")
+<!<^<#*8:: sendSpaceAny("Numpad8")
+<!<^<#*9:: sendSpaceAny("Numpad9")
+<!<^<#*0:: sendSpaceAny("Numpad0")
+<!<^<#*.:: sendSpaceAny(".")
+;<!<^<#*/:: sendSpaceAny("NumpadDot")
+;<!<^<#*h:: sendSpaceAny("=")
+<!<^<#*;:: sendSpaceAny("NumpadEnter")
+<!<^<#*p:: sendSpaceAny("Backspace")
+;<!<^<#*Tab:: sendSpaceAny("NumpadDel")
+;<!<^<#*c:: sendSpaceAny("NumpadClear")
+<!<^<#*n:: sendSpaceAny("NumpadAdd")
+<!<^<#*m:: sendSpaceAny("NumpadSub")
+<!<^<#*h:: sendSpaceAny("NumpadMult")
+<!<^<#*y:: sendSpaceAny("NumpadDiv")
+<!<^<#*[:: sendSpaceAny("(")
+<!<^<#*]:: sendSpaceAny(")")
+<!<^<#*ESC:: sendSpaceAny("NumLock")
 
-
-#HotIf
 
 ;#Include MyHotString.ahk
 ; #Include ForSplashtop.ahk
 #Include TestGUI.ahk
-#Include SCFn.ahk
+;#Include SCFn.ahk
