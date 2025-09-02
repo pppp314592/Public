@@ -36,6 +36,7 @@ sendSpaceAny(key) {
     else
         SendEvent "{" key "}"
     ;ToolTip(key . GetKeyState("LControl", "P") . GetKeyState("LWin", "P") . GetKeyState("LAlt", "P"))  ; デバッグ用
+    ;ToolTip(key . "isjis" . isJIS)  ; デバッグ用
 }
 
 #HotIf SpaceFnMode ; SpaceFnモード時のみ有効
@@ -50,19 +51,9 @@ sendSpaceAny(key) {
 *8:: sendSpaceAny("F8")
 *9:: sendSpaceAny("F9")
 *0:: sendSpaceAny("F10")
-; *-:: sendSpaceAny("F11")
-; *^:: {
-;     if (isJIS)
-;         sendSpaceAny("F12")
-;     else
-;         sendSpaceAny("^")
-; }
-; *=:: {
-;     if (!isJIS)
-;         sendSpaceAny("F12")
-;     else
-;         sendSpaceAny("=")
-; }
+*-:: SendInput("^{Space}")
+
+
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
 *w:: sendSpaceAny("F12")
@@ -102,23 +93,23 @@ sendSpaceAny(key) {
 *x:: sendSpaceAny(")")
 *c:: sendSpaceAny("[")
 *v:: sendSpaceAny("]")
-*b:: sendSpaceAny("\")
+*b:: sendSpaceAny(";")
 +*z:: sendSpaceAny("{")
 +*x:: sendSpaceAny("}")
 +*c:: sendSpaceAny("{")
 +*v:: sendSpaceAny("}")
-+*b:: sendSpaceAny("¥")
+;+*b:: sendSpaceAny("¥")
 ; --- NM,./ ---
-; *n:: sendSpaceAny("[")
-; *m:: sendSpaceAny("]")
-*,:: sendSpaceAny("PgUp")
-*.:: sendSpaceAny("PgDn")
-; */:: sendSpaceAny("'")
+*n:: sendSpaceAny("{")
+*m:: sendSpaceAny("}")
+*,:: sendSpaceAny("<")
+*.:: sendSpaceAny(">")
+*/:: sendSpaceAny("\")
 ; +*n:: sendSpaceAny("{")
 ; +*m:: sendSpaceAny("}")
 ; +*,:: sendSpaceAny("<")
 ; +*.:: sendSpaceAny(">")
-; +*/:: sendSpaceAny("`"")
++*/:: sendSpaceAny("¥")
 *ESC:: sendSpaceAny("``")
 *Tab:: sendSpaceAny("'")
 +*ESC:: sendSpaceAny("~")
