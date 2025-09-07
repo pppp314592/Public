@@ -66,7 +66,8 @@ sendSpaceAny(key) {
 +*r:: sendSpaceAny("$")
 +*t:: sendSpaceAny("@")
 ; --- YUIOP ---
-*y:: sendSpaceAny("ESC")
+*y:: SendInput("^{Space}")
+;*y:: sendSpaceAny("ESC")
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
