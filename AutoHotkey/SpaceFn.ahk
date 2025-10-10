@@ -52,6 +52,8 @@ sendSpaceAny(key) {
 *8:: sendSpaceAny("F8")
 *9:: sendSpaceAny("F9")
 *0:: sendSpaceAny("F10")
+*-:: sendSpaceAny("F11")
+*^:: sendSpaceAny("F12")
 +*1:: sendSpaceAny("F1")
 +*2:: sendSpaceAny("F2")
 +*3:: sendSpaceAny("F3")
@@ -62,6 +64,8 @@ sendSpaceAny(key) {
 +*8:: sendSpaceAny("F8")
 +*9:: sendSpaceAny("F9")
 +*0:: sendSpaceAny("F10")
++*-:: sendSpaceAny("F11")
++*^:: sendSpaceAny("F12")
 
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
@@ -75,11 +79,11 @@ sendSpaceAny(key) {
 +*r:: sendSpaceAny("$")
 +*t:: sendSpaceAny("@")
 ; --- YUIOP ---
-*y:: {
-    sendSpaceAny("")
-    SendInput("^{Space}")
-}
-;*y:: sendSpaceAny("ESC")
+; *y:: {
+;     sendSpaceAny("")
+;     SendInput("^{Space}")
+; }
+*y:: sendSpaceAny("vk1Dsc07B")
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
@@ -138,12 +142,13 @@ sendSpaceAny(key) {
 *BackSpace:: sendSpaceAny("WheelUp 4")
 *\:: sendSpaceAny("Volume_Mute")
 
-*':: {
-    if (!isJIS)
-        GUI_test() ; layer1.jpg
-    else
-        SendInput "{Blind}{'}"
-}
+; *':: {
+;     if (!isJIS)
+;         GUI_test() ; layer1.jpg
+;     else
+;         SendInput "{Blind}{'}"
+; }
+
 
 #HotIf !SpaceFnMode
 ; --- NumPad ---
@@ -177,5 +182,5 @@ sendSpaceAny(key) {
 
 ;#Include MyHotString.ahk
 ; #Include ForSplashtop.ahk
-#Include TestGUI.ahk
+;#Include TestGUI.ahk
 ;#Include SCFn.ahk
