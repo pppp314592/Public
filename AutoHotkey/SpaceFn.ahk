@@ -54,6 +54,7 @@ sendSpaceAny(key) {
 *0:: sendSpaceAny("F10")
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *-:: sendSpaceAny("F11")
 *^:: sendSpaceAny("F12")
 =======
@@ -62,6 +63,10 @@ sendSpaceAny(key) {
 *-:: sendSpaceAny("F11")
 *^:: sendSpaceAny("F12")
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
+*-:: sendSpaceAny("F11")
+*^:: sendSpaceAny("F12")
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 +*1:: sendSpaceAny("F1")
 +*2:: sendSpaceAny("F2")
 +*3:: sendSpaceAny("F3")
@@ -74,6 +79,7 @@ sendSpaceAny(key) {
 +*0:: sendSpaceAny("F10")
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 +*-:: sendSpaceAny("F11")
 +*^:: sendSpaceAny("F12")
 =======
@@ -82,6 +88,10 @@ sendSpaceAny(key) {
 +*-:: sendSpaceAny("F11")
 +*^:: sendSpaceAny("F12")
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
++*-:: sendSpaceAny("F11")
++*^:: sendSpaceAny("F12")
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
@@ -97,13 +107,17 @@ sendSpaceAny(key) {
 ; --- YUIOP ---
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 ; *y:: {
 ;     sendSpaceAny("")
 ;     SendInput("^{Space}")
 ; }
 *y:: sendSpaceAny("vk1Dsc07B")
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 *y:: {
@@ -114,6 +128,8 @@ sendSpaceAny(key) {
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
@@ -176,8 +192,11 @@ sendSpaceAny(key) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 ; *':: {
 ;     if (!isJIS)
 ;         GUI_test() ; layer1.jpg
@@ -185,6 +204,7 @@ sendSpaceAny(key) {
 ;         SendInput "{Blind}{'}"
 ; }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 *':: {
@@ -196,6 +216,8 @@ sendSpaceAny(key) {
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
+=======
+>>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 
 #HotIf !SpaceFnMode
 ; --- NumPad ---
