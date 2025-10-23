@@ -56,6 +56,7 @@ sendSpaceAny(key) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *-:: sendSpaceAny("F11")
 *^:: sendSpaceAny("F12")
 =======
@@ -72,6 +73,10 @@ sendSpaceAny(key) {
 *-:: sendSpaceAny("F11")
 *^:: sendSpaceAny("F12")
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
+*-:: sendSpaceAny("F11")
+*^:: sendSpaceAny("F12")
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 +*1:: sendSpaceAny("F1")
 +*2:: sendSpaceAny("F2")
 +*3:: sendSpaceAny("F3")
@@ -86,6 +91,7 @@ sendSpaceAny(key) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 +*-:: sendSpaceAny("F11")
 +*^:: sendSpaceAny("F12")
 =======
@@ -102,6 +108,10 @@ sendSpaceAny(key) {
 +*-:: sendSpaceAny("F11")
 +*^:: sendSpaceAny("F12")
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
++*-:: sendSpaceAny("F11")
++*^:: sendSpaceAny("F12")
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
@@ -119,17 +129,21 @@ sendSpaceAny(key) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 ; *y:: {
 ;     sendSpaceAny("")
 ;     SendInput("^{Space}")
 ; }
 *y:: sendSpaceAny("vk1Dsc07B")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,6 +160,8 @@ sendSpaceAny(key) {
 >>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
@@ -210,12 +226,15 @@ sendSpaceAny(key) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28f96db (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 ; *':: {
 ;     if (!isJIS)
 ;         GUI_test() ; layer1.jpg
@@ -223,6 +242,7 @@ sendSpaceAny(key) {
 ;         SendInput "{Blind}{'}"
 ; }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -240,6 +260,8 @@ sendSpaceAny(key) {
 >>>>>>> 6cbd917 (JIS ベースでF11,F12変更)
 =======
 >>>>>>> 6d31d01 (JIS ベースでF11,F12変更)
+=======
+>>>>>>> ab8d1ce443ed67f52dba63a90b3f4c8ee49ecdc7
 
 #HotIf !SpaceFnMode
 ; --- NumPad ---
