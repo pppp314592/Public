@@ -20,6 +20,7 @@ FuncList := Array(
     , "ESC", "Up", "Down", "Left", "Right", "Home", "End", "Backspace", "Delete", "Enter"
     , "Volume_Down", "Volume_Up", "Volume_Mute", "BROWSER_BACK", "BROWSER_FORWARD"
     , "PgUp", "PgDn"
+    , "^{Space}"
 )
 
 sendSpaceAny(key) {
@@ -51,8 +52,20 @@ sendSpaceAny(key) {
 *8:: sendSpaceAny("F8")
 *9:: sendSpaceAny("F9")
 *0:: sendSpaceAny("F10")
-*-:: SendInput("^{Space}")
-
+*-:: sendSpaceAny("F11")
+*^:: sendSpaceAny("F12")
++*1:: sendSpaceAny("F1")
++*2:: sendSpaceAny("F2")
++*3:: sendSpaceAny("F3")
++*4:: sendSpaceAny("F4")
++*5:: sendSpaceAny("F5")
++*6:: sendSpaceAny("F6")
++*7:: sendSpaceAny("F7")
++*8:: sendSpaceAny("F8")
++*9:: sendSpaceAny("F9")
++*0:: sendSpaceAny("F10")
++*-:: sendSpaceAny("F11")
++*^:: sendSpaceAny("F12")
 
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
@@ -66,8 +79,11 @@ sendSpaceAny(key) {
 +*r:: sendSpaceAny("$")
 +*t:: sendSpaceAny("@")
 ; --- YUIOP ---
-*y:: SendInput("^{Space}")
-;*y:: sendSpaceAny("ESC")
+; *y:: {
+;     sendSpaceAny("")
+;     SendInput("^{Space}")
+; }
+*y:: sendSpaceAny("vk1Dsc07B")
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
@@ -118,27 +134,23 @@ sendSpaceAny(key) {
 
 
 ; --- その他 ---
-*[:: sendSpaceAny("Volume_Down")
-*]:: sendSpaceAny("Volume_Up")
+; *[:: sendSpaceAny("Volume_Down")
+; *]:: sendSpaceAny("Volume_Up")
+*@:: sendSpaceAny("Volume_Down")
+*[:: sendSpaceAny("Volume_Up")
 +*[:: sendSpaceAny("BROWSER_BACK")
 +*]:: sendSpaceAny("BROWSER_FORWARD")
 *Enter:: sendSpaceAny("WheelDown 4")
 *BackSpace:: sendSpaceAny("WheelUp 4")
 *\:: sendSpaceAny("Volume_Mute")
-;+*\:: sendSpaceAny("Launch_Media")
-; if (isJIS) {
-;     ;     *SC027:: GUI_test() ; layer1.jpg
-;     ;     +*SC027:: GUI_test(true) ; layer2.jpg
-;     ; } else {
-;     *':: GUI_test() ; layer1.jpg
-;     +*':: GUI_test(true) ; layer2.jpg
+
+; *':: {
+;     if (!isJIS)
+;         GUI_test() ; layer1.jpg
+;     else
+;         SendInput "{Blind}{'}"
 ; }
-*':: {
-    if (!isJIS)
-        GUI_test() ; layer1.jpg
-    else
-        SendInput "{Blind}{'}"
-}
+
 
 #HotIf !SpaceFnMode
 ; --- NumPad ---
@@ -172,5 +184,5 @@ sendSpaceAny(key) {
 
 ;#Include MyHotString.ahk
 ; #Include ForSplashtop.ahk
-#Include TestGUI.ahk
+;#Include TestGUI.ahk
 ;#Include SCFn.ahk
