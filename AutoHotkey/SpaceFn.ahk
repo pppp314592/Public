@@ -21,6 +21,7 @@ FuncList := Array(
     , "Volume_Down", "Volume_Up", "Volume_Mute", "BROWSER_BACK", "BROWSER_FORWARD"
     , "PgUp", "PgDn"
     , "^{Space}"
+    , "^{Space}"
 )
 
 sendSpaceAny(key) {
@@ -134,6 +135,10 @@ sendSpaceAny(key) {
 ; *]:: sendSpaceAny("Volume_Up")
 *@:: sendSpaceAny("Volume_Down")
 *[:: sendSpaceAny("Volume_Up")
+; *[:: sendSpaceAny("Volume_Down")
+; *]:: sendSpaceAny("Volume_Up")
+*@:: sendSpaceAny("Volume_Down")
+*[:: sendSpaceAny("Volume_Up")
 +*[:: sendSpaceAny("BROWSER_BACK")
 +*]:: sendSpaceAny("BROWSER_FORWARD")
 *Enter:: sendSpaceAny("WheelDown 4")
@@ -172,5 +177,6 @@ sendSpaceAny(key) {
 
 ;#Include MyHotString.ahk
 ; #Include ForSplashtop.ahk
+;#Include TestGUI.ahk
 ;#Include TestGUI.ahk
 ;#Include SCFn.ahk
