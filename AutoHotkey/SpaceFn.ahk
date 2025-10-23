@@ -53,10 +53,15 @@ sendSpaceAny(key) {
 *9:: sendSpaceAny("F9")
 *0:: sendSpaceAny("F10")
 <<<<<<< HEAD
+<<<<<<< HEAD
 *-:: sendSpaceAny("F11")
 *^:: sendSpaceAny("F12")
 =======
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
+=======
+*-:: sendSpaceAny("F11")
+*^:: sendSpaceAny("F12")
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 +*1:: sendSpaceAny("F1")
 +*2:: sendSpaceAny("F2")
 +*3:: sendSpaceAny("F3")
@@ -68,10 +73,15 @@ sendSpaceAny(key) {
 +*9:: sendSpaceAny("F9")
 +*0:: sendSpaceAny("F10")
 <<<<<<< HEAD
+<<<<<<< HEAD
 +*-:: sendSpaceAny("F11")
 +*^:: sendSpaceAny("F12")
 =======
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
+=======
++*-:: sendSpaceAny("F11")
++*^:: sendSpaceAny("F12")
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 
 ; --- QWERT ---
 *q:: sendSpaceAny("F11")
@@ -86,11 +96,15 @@ sendSpaceAny(key) {
 +*t:: sendSpaceAny("@")
 ; --- YUIOP ---
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 ; *y:: {
 ;     sendSpaceAny("")
 ;     SendInput("^{Space}")
 ; }
 *y:: sendSpaceAny("vk1Dsc07B")
+<<<<<<< HEAD
 =======
 *y:: {
     sendSpaceAny("")
@@ -98,6 +112,8 @@ sendSpaceAny(key) {
 }
 ;*y:: sendSpaceAny("ESC")
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
+=======
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 *u:: sendSpaceAny("Home")
 *i:: sendSpaceAny("Up")
 *o:: sendSpaceAny("End")
@@ -159,6 +175,9 @@ sendSpaceAny(key) {
 *\:: sendSpaceAny("Volume_Mute")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 ; *':: {
 ;     if (!isJIS)
 ;         GUI_test() ; layer1.jpg
@@ -166,6 +185,7 @@ sendSpaceAny(key) {
 ;         SendInput "{Blind}{'}"
 ; }
 
+<<<<<<< HEAD
 =======
 *':: {
     if (!isJIS)
@@ -174,6 +194,8 @@ sendSpaceAny(key) {
         SendInput "{Blind}{'}"
 }
 >>>>>>> 35a859b (ctrl+spaceでスペースが入ってしまう修正)
+=======
+>>>>>>> 28f96db (JIS ベースでF11,F12変更)
 
 #HotIf !SpaceFnMode
 ; --- NumPad ---
